@@ -1,6 +1,7 @@
 package com.example.android.opencvar;
 
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
@@ -40,6 +41,7 @@ import java.util.List;
 public final class MainActivity extends AppCompatActivity implements
         CameraBridgeViewBase.CvCameraViewListener2 {
 
+    @SuppressLint("LongLogTag")
     @Override
     protected void onCreate(Bundle savedInstanceState){
         Log.i(TAG, "called onCreate");
@@ -72,6 +74,7 @@ public final class MainActivity extends AppCompatActivity implements
     //This is the callback object used when we initialize the OpenCV //library asynchronously
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
 
+        @SuppressLint("LongLogTag")
         @Override
         //This is the callback method called once the OpenCV //manager is connected
         public void onManagerConnected(int status) {
@@ -134,7 +137,7 @@ public final class MainActivity extends AppCompatActivity implements
             Imgproc.approxPolyDP(contour2f, approxCurve, approx, true);
 
             approxCurve.convertTo(approxContour, CvType.CV_32S);
-            if(approxContour.size().height == 4) {
+            if(Imgproc.contourArea(approxCurve) > 1000 && approxContour.size().height == 4) {
                 Imgproc.drawContours(colorFrame, contours, contourIdx, new Scalar(255, 0, 0), -1);
             }
         }
